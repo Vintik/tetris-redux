@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { initSplash, startGame, moveTetriminoDown } from '../actions';
+// import { initSplash, startGame, moveTetriminoDown, moveTetriminoLeft } from '../actions';
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
@@ -12,11 +12,7 @@ import Tetris from '../components/Tetris';
     Keys will be passed as props to presentational components. Here we are
     implementing our wrapper around increment; the component doesn't care   */
 
-const mapActionCreators = {
-  initSplash,
-  startGame,
-  moveTetriminoDown
-};
+const mapActionCreators = require('../actions');
 
 const mapStateToProps = (state) => ({
     board: state.tetris.board,

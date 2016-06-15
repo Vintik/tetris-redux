@@ -37,7 +37,10 @@ const Row = (props) => {
 };
 
 const SPACE_BAR_KEYCODE = 32;
+const UP_ARROW_KEYCODE = 38;
 const DOWN_ARROW_KEYCODE = 40;
+const LEFT_ARROW_KEYCODE = 37;
+const RIGHT_ARROW_KEYCODE = 39;
 
 class Tetris extends React.Component {
   componentDidMount() {
@@ -49,14 +52,34 @@ class Tetris extends React.Component {
   }
 
   onKeyDown = (event) => {
-    if (this.props.gameState === GameStates.SPLASH && event.keyCode === SPACE_BAR_KEYCODE) {
-      this.props.startGame();
-      return;
-    }
+    console.log(event.keyCode);
+    switch (event.keyCode) {
+      case SPACE_BAR_KEYCODE: {
+        if (this.props.gameState === GameStates.SPLASH) {
+          this.props.startGame();
+        }
+        break;
+      }
 
-    if (event.keyCode === DOWN_ARROW_KEYCODE) {
-      this.props.moveTetriminoDown();
-      return;
+      case DOWN_ARROW_KEYCODE: {
+        this.props.moveTetriminoDown();
+        break;
+      }
+
+      case UP_ARROW_KEYCODE: {
+        this.props.rotateTetrimino();
+        break;
+      }
+
+      case RIGHT_ARROW_KEYCODE: {
+        this.props.moveTetriminoRight();
+        break;
+      }
+
+      case LEFT_ARROW_KEYCODE: {
+        this.props.moveTetriminoLeft();
+        break;
+      }
     }
   }
 

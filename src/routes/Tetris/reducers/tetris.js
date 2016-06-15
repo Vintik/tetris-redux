@@ -1,4 +1,4 @@
-import { each, clone, cloneDeep, times, sample } from 'lodash';
+import { each, clone, cloneDeep, times, sample, zip } from 'lodash';
 import { GameStates, ActionTypes, TetriminoColors, TetriminoShapes } from '../constants';
 
 const DEFAULT_BOARD_WIDTH = 10;
@@ -14,25 +14,35 @@ class Tetrimino {
 
     this.left = (Math.floor(board.width / 2) - board.width % 2) - (Math.floor(this.width / 2) + (this.width % 2));
     this.top = 0;
+  }
 
+  moveLeft() {
+    this.left--;
     return this;
   }
 
-  moveLeft(board) {
-    const newLeft = this.left - 1;
-    const canMove = every(this.shape, (row, y) => {
-      return every(row, (cell, x) => {
-        return cell && !board.isFilled(x, y);
-      })
-    })
-
+  moveRight() {
+    this.left++;
+    return this;
   }
-  moveRight() {}
+
   moveDown() {
     this.top++;
     return this;
   }
-  rotate() {}
+
+  // TODO: In real tetris the tetrimino should rotate around the center,
+  //       instead of keeping the same position on the board.
+  rotate() {
+    this.shape = zip.apply(null, this.shape).map(row => {
+      return row.reverse()
+    });
+
+    this.height = this.shape.length;
+    this.width = this.shape[0].length;
+
+    return this;
+  }
   drop() {}
 }
 
@@ -48,14 +58,6 @@ class Board {
 
     this.width = width;
     this.height = height;
-
-    // _this.getTetriminoCells = this.getTetriminoCells;
-    // _this.canMove = this.canMove;
-    // _this.placeTetrimino = this.placeTetrimino;
-    // _this.clearRow = this.clearRow;
-    // _this.isRowFilled = this.isRowFilled;
-
-    // return _this;
   }
 
   getTetriminoCells(tetrimino) {
@@ -90,7 +92,7 @@ class Board {
     const x = tetrimino.left;
     const y = tetrimino.top;
 
-    if (x < 0 || x + tetrimino.width >= this.width) {
+    if (x < 0 || x + tetrimino.width > this.width) {
       return false;
     }
 
@@ -121,15 +123,13 @@ export function startGame() {
 };
 
 
-const getInitialState = () => {
-  return {
-    gameState: GameStates.SPLASH,
-    board: null,
-    tetrimino: null
-  };
+const initialState = {
+  gameState: GameStates.SPLASH,
+  board: null,
+  tetrimino: null
 };
 
-export default function gameStateReducer(state = {}, action) {
+export default function gameStateReducer(state = initialState, action) {
   switch (action.type) {
     case ActionTypes.START_GAME: {
       return startGame();
@@ -152,29 +152,44 @@ export default function gameStateReducer(state = {}, action) {
     }
 
     case ActionTypes.MOVE_TETRIMINO_LEFT: {
-      let newTetriminoState = state.tetrimino.moveLeft();
-      let newBoardState = state.board;
+      let newTetriminoState = clone(state.tetrimino).moveLeft();
 
       if (!state.board.canMove(newTetriminoState)) {
-        newBoardState = state.board.placeTetrimino(state.tetrimino);
-        newTetriminoState = new Tetrimino(newBoardState);
+        return state;
       }
 
       return {
         ...state,
-        board: newBoardState,
         tetrimino: newTetriminoState
       };
     }
 
     case ActionTypes.MOVE_TETRIMINO_RIGHT: {
+      let newTetriminoState = clone(state.tetrimino).moveRight();
 
+      if (!state.board.canMove(newTetriminoState)) {
+        return state;
+      }
+
+      return {
+        ...state,
+        tetrimino: newTetriminoState
+      };
     }
 
-    case ActionTypes.INIT_SPLASH:
-    default: {
-      return getInitialState();
-    }
+    case ActionTypes.ROTATE_TETRIMINO: {
+      let newTetriminoState = clone(state.tetrimino).rotate();
 
+      if (!state.board.canMove(newTetriminoState)) {
+        return state;
+      }
+
+      return {
+        ...state,
+        tetrimino: newTetriminoState
+      };
+    }
   }
+
+  return initialState;
 };
