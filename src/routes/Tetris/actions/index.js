@@ -2,15 +2,20 @@ import { ActionTypes } from '../constants';
 
 export function initSplash() {
   return {
-    type: ActionTypes.InitSplash,
-    payload: null
+    type: ActionTypes.InitSplash
   }
 };
 
 export function startGame() {
-  console.log('actions #startGame');
   return {
-    type: ActionTypes.START_GAME,
-    payload: null
+    type: ActionTypes.START_GAME
   };
 };
+
+export function moveTetriminoDown() {
+  return {
+    type: ActionTypes.MOVE_TETRIMINO_DOWN
+  };
+};
+//
+//

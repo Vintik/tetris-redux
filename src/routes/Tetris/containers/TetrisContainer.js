@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { initSplash, startGame } from '../actions';
+import { initSplash, startGame, moveTetriminoDown } from '../actions';
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
@@ -14,11 +14,13 @@ import Tetris from '../components/Tetris';
 
 const mapActionCreators = {
   initSplash,
-  startGame
+  startGame,
+  moveTetriminoDown
 };
 
 const mapStateToProps = (state) => ({
-    matrix: state.tetris.matrix,
+    board: state.tetris.board,
+    tetrimino: state.tetris.tetrimino,
     gameState: state.tetris.gameState
 });
 

@@ -1,23 +1,116 @@
 import React from  'react';
+import { map } from 'lodash';
 import { GameStates } from '../../constants';
-import SplashScreen from '../SplashScreen'
+import SplashScreen from '../SplashScreen';
+
+const CELL_SIZE = 20;
+
+const Cell = (props) => {
+  const style = {
+    backgroundColor: props.color,
+    display: 'inline-block', // Move to css
+    float: 'left',
+    width: CELL_SIZE,
+    height: CELL_SIZE
+  }
+
+  return (
+    <span style={style} />
+  );
+}
+
+
+const Row = (props) => {
+  const style = {
+    display: 'inline-block',
+    height: CELL_SIZE,
+    float: 'left',
+    width: props.children.length * CELL_SIZE
+  };
+
+  return (
+    <div style={style}>
+      {props.children}
+    </div>
+  );
+
+};
+
+const SPACE_BAR_KEYCODE = 32;
+const DOWN_ARROW_KEYCODE = 40;
 
 class Tetris extends React.Component {
-  render() {
-    switch (this.props.gameState) {
-      case GameStates.GAME_STARTED: {
-        return (
-          <div>Game Started</div>
-        );
-      }
-      case GameStates.SPLASH: {
-        console.log(this.props.startGame);
-        return (
-          <SplashScreen startGame={this.props.startGame} />
-        );
-      }
-      default: {}
+  componentDidMount() {
+    window.addEventListener('keydown', this.onKeyDown, false);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.onKeyDown, false);
+  }
+
+  onKeyDown = (event) => {
+    console.log(event.keyCode);
+    if (GameStates.SPLASH && event.keyCode === SPACE_BAR_KEYCODE) {
+      return this.props.startGame();
     }
+
+    if (event.keyCode === DOWN_ARROW_KEYCODE) {
+      return this.props.moveTetriminoDown();
+    }
+
+    // if (GameStates.GAME_STARTED && event.keyCode === )
+  }
+
+  render() {
+    if (this.props.gameState === GameStates.SPLASH)  {
+      return (
+        <div>Press space to start</div>
+      );
+    //     return (
+    //       <SplashScreen startGame={this.props.startGame} />
+    //     );
+    }
+
+    const style = {
+      backgroundColor: 'black',
+      border: '1px solid red',
+      width: this.props.board.width * CELL_SIZE,
+      height: this.props.board.height * CELL_SIZE,
+      boxSizing: 'content-box',
+      display: 'inline-block'
+    };
+
+    const t = this.props.tetrimino;
+
+    return (
+      <div style={style}>
+        {
+          map(this.props.board, (row, y) => {
+            return (
+              <Row key={'y' + y}>
+                {
+                  map(row, (color, x) => {
+                    // Check whether cell is part of current tetrimino
+                    if (!color) {
+                      const isTetriminoCell = y >= t.top && y < t.top + t.height && x >= t.left && x < t.left + t.width;
+
+                      if (isTetriminoCell && t.shape[y - t.top][x - t.left]) {
+                        color = t.color;
+
+                      }
+                    }
+
+                    return (
+                      <Cell key={'x' + x} color={color}/>
+                    );
+                  })
+                }
+              </Row>
+            );
+          })
+        }
+      </div>
+    );
   }
 }
 

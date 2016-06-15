@@ -14,7 +14,6 @@ class SplashScreen extends React.Component {
 
   onKeyDown = (event) => {
     if (event.keyCode === SPACE_BAR_KEYCODE) {
-      console.log('calling #startGame');
       this.props.startGame();
     }
   }
