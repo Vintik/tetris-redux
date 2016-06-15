@@ -17,5 +17,3 @@ export function moveTetriminoDown() {
     type: ActionTypes.MOVE_TETRIMINO_DOWN
   };
 };
-//
-//

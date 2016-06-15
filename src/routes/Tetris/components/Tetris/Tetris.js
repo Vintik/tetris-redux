@@ -49,16 +49,15 @@ class Tetris extends React.Component {
   }
 
   onKeyDown = (event) => {
-    console.log(event.keyCode);
-    if (GameStates.SPLASH && event.keyCode === SPACE_BAR_KEYCODE) {
-      return this.props.startGame();
+    if (this.props.gameState === GameStates.SPLASH && event.keyCode === SPACE_BAR_KEYCODE) {
+      this.props.startGame();
+      return;
     }
 
     if (event.keyCode === DOWN_ARROW_KEYCODE) {
-      return this.props.moveTetriminoDown();
+      this.props.moveTetriminoDown();
+      return;
     }
-
-    // if (GameStates.GAME_STARTED && event.keyCode === )
   }
 
   render() {
@@ -85,7 +84,7 @@ class Tetris extends React.Component {
     return (
       <div style={style}>
         {
-          map(this.props.board, (row, y) => {
+          map(this.props.board.rows, (row, y) => {
             return (
               <Row key={'y' + y}>
                 {
