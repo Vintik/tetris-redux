@@ -128,7 +128,7 @@ class Board {
 
 const initialState = {
   gameState: GameStates.SPLASH,
-  board: null,
+  board: new Board(),
   tetrimino: null,
   linesCleared: 0
 };
@@ -136,13 +136,11 @@ const initialState = {
 export default function gameStateReducer(state = initialState, action) {
   switch (action.type) {
     case ActionTypes.START_GAME: {
-      const board = new Board();
-      const tetrimino = new Tetrimino(board);
+      const tetrimino = new Tetrimino(state.board);
 
       return {
         ...state,
         gameState: GameStates.GAME_RUNNING,
-        board: board,
         tetrimino: tetrimino,
         timerId: action.payload.timerId
       };

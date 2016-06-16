@@ -37,3 +37,14 @@ export const TetriminoShapes = {
   L_GUN: [[0, 0, 1], [1, 1, 1]],
   R_GUN: [[1, 0, 0], [1, 1, 1]]
 }
+
+export const CELL_SIZE = 20;
+
+export const KeyCodes = {
+  SPACE_BAR_KEYCODE: 32,
+  UP_ARROW_KEYCODE: 38,
+  DOWN_ARROW_KEYCODE: 40,
+  LEFT_ARROW_KEYCODE: 37,
+  RIGHT_ARROW_KEYCODE: 39,
+  P_KEYCODE: 80
+}

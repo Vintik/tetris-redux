@@ -1,0 +1,16 @@
+.tetrisSplash, .tetrisGameOver {
+  position: absolute;
+  background-color: black;
+  width: 100%;
+  height: 100%;
+  opacity: 0.85;
+  color: lightgreen;
+
+  label {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+}
