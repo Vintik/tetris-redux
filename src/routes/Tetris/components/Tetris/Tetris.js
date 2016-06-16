@@ -41,6 +41,7 @@ const UP_ARROW_KEYCODE = 38;
 const DOWN_ARROW_KEYCODE = 40;
 const LEFT_ARROW_KEYCODE = 37;
 const RIGHT_ARROW_KEYCODE = 39;
+const P_KEYCODE = 80;
 
 class Tetris extends React.Component {
   componentDidMount() {
@@ -52,33 +53,44 @@ class Tetris extends React.Component {
   }
 
   onKeyDown = (event) => {
-    // console.log(event.keyCode);
-    switch (event.keyCode) {
-      case SPACE_BAR_KEYCODE: {
-        if (this.props.gameState === GameStates.SPLASH) {
-          this.props.startGame();
+    if (this.props.gameState === GameStates.SPLASH) {
+      if (event.keyCode === SPACE_BAR_KEYCODE) {
+        this.props.startGame();
+      }
+    } else if (this.props.gameState === GameStates.GAME_RUNNING) {
+      switch (event.keyCode) {
+        case DOWN_ARROW_KEYCODE: {
+          this.props.moveTetriminoDown();
+          break;
         }
-        break;
-      }
 
-      case DOWN_ARROW_KEYCODE: {
-        this.props.moveTetriminoDown();
-        break;
-      }
+        case UP_ARROW_KEYCODE: {
+          this.props.rotateTetrimino();
+          break;
+        }
 
-      case UP_ARROW_KEYCODE: {
-        this.props.rotateTetrimino();
-        break;
-      }
+        case RIGHT_ARROW_KEYCODE: {
+          this.props.moveTetriminoRight();
+          break;
+        }
 
-      case RIGHT_ARROW_KEYCODE: {
-        this.props.moveTetriminoRight();
-        break;
-      }
+        case LEFT_ARROW_KEYCODE: {
+          this.props.moveTetriminoLeft();
+          break;
+        }
 
-      case LEFT_ARROW_KEYCODE: {
-        this.props.moveTetriminoLeft();
-        break;
+        case P_KEYCODE: {
+          this.props.pauseGame();
+          break;
+        }
+      }
+    } else if (this.props.gameState === GameStates.GAME_PAUSED) {
+      if (event.keyCode === P_KEYCODE) {
+        this.props.unpauseGame();
+      }
+    } else if (this.props.gameState === GameStates.GAME_OVER) {
+      if (event.keyCode === SPACE_BAR_KEYCODE) {
+        this.props.startGame();
       }
     }
   }

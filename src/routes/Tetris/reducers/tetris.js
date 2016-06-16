@@ -126,38 +126,59 @@ class Board {
   }
 }
 
-export function startGame() {
-  const board = new Board();
-  const tetrimino = new Tetrimino(board);
-
-  return {
-    gameState: GameStates.GAME_STARTED,
-    board: board,
-    tetrimino: tetrimino
-  };
-};
-
-
 const initialState = {
   gameState: GameStates.SPLASH,
   board: null,
-  tetrimino: null
+  tetrimino: null,
+  linesCleared: 0
 };
 
 export default function gameStateReducer(state = initialState, action) {
   switch (action.type) {
     case ActionTypes.START_GAME: {
-      return startGame();
+      const board = new Board();
+      const tetrimino = new Tetrimino(board);
+
+      return {
+        ...state,
+        gameState: GameStates.GAME_RUNNING,
+        board: board,
+        tetrimino: tetrimino,
+        timerId: action.payload.timerId
+      };
+    }
+
+    case ActionTypes.PAUSE_GAME: {
+      return {
+        ...state,
+        timerId: action.payload.timerId,
+        gameState: GameStates.GAME_PAUSED
+      };
+    }
+
+    case ActionTypes.UNPAUSE_GAME: {
+      return {
+        ...state,
+        timerId: action.payload.timerId,
+        gameState: GameStates.GAME_RUNNING
+      };
     }
 
     case ActionTypes.MOVE_TETRIMINO_DOWN: {
       let newTetriminoState = clone(state.tetrimino).moveDown();
       let newBoardState = state.board;
 
-      if (!state.board.canMove(newTetriminoState)) {
-        newBoardState = clone(state.board)
-          .placeTetrimino(state.tetrimino)
-          .clearRows(state.tetrimino);
+      const canMove = state.board.canMove(newTetriminoState);
+
+      if (!canMove && state.tetrimino.top === 0) {
+        newTetriminoState = state.tetrimino;
+        state.gameState = GameStates.GAME_OVER;
+      } else if (!canMove) {
+        newBoardState = clone(state.board);
+
+        newBoardState.placeTetrimino(state.tetrimino);
+        newBoardState.clearRows(state.tetrimino);
+
         newTetriminoState = new Tetrimino(newBoardState);
       }
 
