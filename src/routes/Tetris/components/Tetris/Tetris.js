@@ -52,7 +52,7 @@ class Tetris extends React.Component {
   }
 
   onKeyDown = (event) => {
-    console.log(event.keyCode);
+    // console.log(event.keyCode);
     switch (event.keyCode) {
       case SPACE_BAR_KEYCODE: {
         if (this.props.gameState === GameStates.SPLASH) {

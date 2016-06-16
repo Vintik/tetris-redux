@@ -1,4 +1,4 @@
-import { each, clone, cloneDeep, times, sample, zip } from 'lodash';
+import { each, clone, every, cloneDeep, times, sample, zip } from 'lodash';
 import { GameStates, ActionTypes, TetriminoColors, TetriminoShapes } from '../constants';
 
 const DEFAULT_BOARD_WIDTH = 10;
@@ -50,14 +50,16 @@ class Board {
   constructor(width = DEFAULT_BOARD_WIDTH, height = DEFAULT_BOARD_HEIGHT) {
     this.rows = [];
 
-    times(height, () => {
-      const row = [];
-      times(width, () => row.push(null));
-      this.rows.push(row);
-    });
+    times(height, () => this.addRow(width));
 
     this.width = width;
     this.height = height;
+  }
+
+  addRow(width) {
+    const row = [];
+    times(width, () => row.push(null));
+    this.rows.unshift(row);
   }
 
   getTetriminoCells(tetrimino) {
@@ -107,8 +109,21 @@ class Board {
     });
   }
 
-  clearRow(y) {}
-  isRowFilled(y) {}
+  clearRows(tetrimino) {
+    const lenRows = tetrimino.shape.length;
+
+    times(lenRows, (index) => {
+      const rowIndex = tetrimino.top + index;
+      const isRowFull = every(this.rows[rowIndex], (val) => !!val);
+
+      if (isRowFull) {
+        this.rows.splice(rowIndex, 1);
+        this.addRow(this.width);
+      }
+    });
+
+    return this;
+  }
 }
 
 export function startGame() {
@@ -140,7 +155,9 @@ export default function gameStateReducer(state = initialState, action) {
       let newBoardState = state.board;
 
       if (!state.board.canMove(newTetriminoState)) {
-        newBoardState = clone(state.board).placeTetrimino(state.tetrimino);
+        newBoardState = clone(state.board)
+          .placeTetrimino(state.tetrimino)
+          .clearRows(state.tetrimino);
         newTetriminoState = new Tetrimino(newBoardState);
       }
 
