@@ -146,6 +146,19 @@ export default function gameStateReducer(state = initialState, action) {
       };
     }
 
+    case ActionTypes.RESTART_GAME: {
+      const board = new Board();
+      const tetrimino = new Tetrimino(board);
+
+      return {
+        ...state,
+        gameState: GameStates.GAME_RUNNING,
+        board: board,
+        tetrimino: tetrimino,
+        timerId: action.payload.timerId
+      };
+    }
+
     case ActionTypes.PAUSE_GAME: {
       return {
         ...state,

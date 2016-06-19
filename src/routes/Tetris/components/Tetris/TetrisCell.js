@@ -1,7 +1,6 @@
 import React from 'react';
 import { CELL_SIZE } from '../../constants';
 
-
 const TetrisCell = (props) => {
   const style = {
     backgroundColor: props.color,

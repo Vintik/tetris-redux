@@ -16,6 +16,18 @@ export function startGame() {
   };
 };
 
+export function restartGame() {
+  return (dispatch, getState) => {
+    clearInterval(getState().tetris.timerId);
+
+    const timerId = setInterval(() => {
+      dispatch(moveTetriminoDown());
+    }, 1000);
+
+    dispatch({ type: ActionTypes.RESTART_GAME, payload: { timerId } });
+  };
+}
+
 export function pauseGame() {
   return (dispatch, getState) => {
     clearInterval(getState().tetris.timerId);

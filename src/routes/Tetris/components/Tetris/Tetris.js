@@ -4,6 +4,7 @@ import { GameStates, KeyCodes, CELL_SIZE } from '../../constants';
 import SplashScreen from '../SplashScreen';
 import Cell from './TetrisCell';
 import Row from './TetrisRow';
+import Controls from './TetrisControls';
 
 import classes from './Tetris.scss';
 
@@ -54,7 +55,7 @@ class Tetris extends React.Component {
       }
     } else if (this.props.gameState === GameStates.GAME_OVER) {
       if (event.keyCode === KeyCodes.SPACE_BAR_KEYCODE) {
-        this.props.startGame();
+        this.props.restartGame();
       }
     }
   }
@@ -121,10 +122,13 @@ class Tetris extends React.Component {
 
 
     return (
-      <div style={style}>
-        {this.renderSplashOverlay()}
-        {this.renderGameLostOverlay()}
-        {this.renderGameBoard()}
+      <div>
+        <div style={style}>
+          {this.renderSplashOverlay()}
+          {this.renderGameLostOverlay()}
+          {this.renderGameBoard()}
+        </div>
+        <Controls />
       </div>
     );
   }
