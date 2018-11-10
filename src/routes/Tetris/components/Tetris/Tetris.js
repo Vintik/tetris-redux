@@ -1,7 +1,6 @@
-import React from  'react';
+import React from 'react';
 import { map } from 'lodash';
 import { GameStates, KeyCodes, CELL_SIZE } from '../../constants';
-import SplashScreen from '../SplashScreen';
 import Cell from './TetrisCell';
 import Row from './TetrisRow';
 import Controls from './TetrisControls';
@@ -9,11 +8,11 @@ import Controls from './TetrisControls';
 import classes from './Tetris.scss';
 
 class Tetris extends React.Component {
-  componentDidMount() {
+  componentDidMount () {
     window.addEventListener('keydown', this.onKeyDown, false);
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     window.removeEventListener('keydown', this.onKeyDown, false);
   }
 
@@ -60,7 +59,7 @@ class Tetris extends React.Component {
     }
   }
 
-  renderGameBoard() {
+  renderGameBoard () {
     const t = this.props.tetrimino;
 
     return map(this.props.board.rows, (row, y) => {
@@ -74,12 +73,11 @@ class Tetris extends React.Component {
 
                 if (isTetriminoCell && t.shape[y - t.top][x - t.left]) {
                   color = t.color;
-
                 }
               }
 
               return (
-                <Cell key={'x' + x} color={color}/>
+                <Cell key={'x' + x} color={color} />
               );
             })
           }
@@ -88,7 +86,7 @@ class Tetris extends React.Component {
     });
   }
 
-  renderSplashOverlay() {
+  renderSplashOverlay () {
     if (this.props.gameState === GameStates.SPLASH) {
       return (
         <div className={classes.tetrisSplash}><label>Press space to start</label></div>
@@ -96,7 +94,7 @@ class Tetris extends React.Component {
     }
   }
 
-  renderGameLostOverlay() {
+  renderGameLostOverlay () {
     if (this.props.gameState === GameStates.GAME_OVER) {
       return (
         <div className={classes.tetrisGameOver}>
@@ -109,7 +107,7 @@ class Tetris extends React.Component {
     }
   }
 
-  render() {
+  render () {
     const style = {
       backgroundColor: 'black',
       border: '1px solid red',
@@ -119,7 +117,6 @@ class Tetris extends React.Component {
       display: 'inline-block',
       position: 'relative'
     };
-
 
     return (
       <div>

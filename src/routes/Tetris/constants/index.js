@@ -21,13 +21,13 @@ export const GameStates = {
 // https://en.wikipedia.org/wiki/Tetris#Colors_of_Tetriminos
 export const TetriminoColors = {
   MAROON: '#AA0000',
-  LIGHT_GRAY: '#C0C0C0' ,
+  LIGHT_GRAY: '#C0C0C0',
   PURPLE: '#AA00AA',
   NAVY_BLUE: '#0000AA',
   DARK_GREEN: '#00AA00',
   BROWN: '#AA5500',
   TEAL: '#00AAAA'
-}
+};
 
 export const TetriminoShapes = {
   STRAIGHT: [[1, 1, 1, 1]],
@@ -37,7 +37,7 @@ export const TetriminoShapes = {
   R_SNAKE: [[0, 1, 1], [1, 1, 0]],
   L_GUN: [[0, 0, 1], [1, 1, 1]],
   R_GUN: [[1, 0, 0], [1, 1, 1]]
-}
+};
 
 export const CELL_SIZE = 20;
 
@@ -48,4 +48,4 @@ export const KeyCodes = {
   LEFT_ARROW_KEYCODE: 37,
   RIGHT_ARROW_KEYCODE: 39,
   P_KEYCODE: 80
-}
+};

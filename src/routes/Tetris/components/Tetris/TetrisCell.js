@@ -8,11 +8,11 @@ const TetrisCell = (props) => {
     float: 'left',
     width: CELL_SIZE,
     height: CELL_SIZE
-  }
+  };
 
   return (
     <span style={style} />
   );
-}
+};
 
 export default TetrisCell;

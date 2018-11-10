@@ -5,7 +5,7 @@ const DEFAULT_BOARD_WIDTH = 10;
 const DEFAULT_BOARD_HEIGHT = 24;
 
 class Tetrimino {
-  constructor(board, type, color) {
+  constructor (board, type, color) {
     this.shape = type ? TetriminoShapes[type] : sample(TetriminoShapes);
     this.color = color ? TetriminoColors[color] : sample(TetriminoColors);
 
@@ -16,26 +16,26 @@ class Tetrimino {
     this.top = 0;
   }
 
-  moveLeft() {
+  moveLeft () {
     this.left--;
     return this;
   }
 
-  moveRight() {
+  moveRight () {
     this.left++;
     return this;
   }
 
-  moveDown() {
+  moveDown () {
     this.top++;
     return this;
   }
 
   // TODO: In real tetris the tetrimino should rotate around the center,
   //       instead of keeping the same position on the board.
-  rotate() {
+  rotate () {
     this.shape = zip.apply(null, this.shape).map(row => {
-      return row.reverse()
+      return row.reverse();
     });
 
     this.height = this.shape.length;
@@ -43,11 +43,11 @@ class Tetrimino {
 
     return this;
   }
-  drop() {}
+  drop () {}
 }
 
 class Board {
-  constructor(width = DEFAULT_BOARD_WIDTH, height = DEFAULT_BOARD_HEIGHT) {
+  constructor (width = DEFAULT_BOARD_WIDTH, height = DEFAULT_BOARD_HEIGHT) {
     this.rows = [];
 
     times(height, () => this.addRow(width));
@@ -56,13 +56,13 @@ class Board {
     this.height = height;
   }
 
-  addRow(width) {
+  addRow (width) {
     const row = [];
     times(width, () => row.push(null));
     this.rows.unshift(row);
   }
 
-  getTetriminoCells(tetrimino) {
+  getTetriminoCells (tetrimino) {
     const cells = [];
 
     each(tetrimino.shape, (row, y) => {
@@ -79,7 +79,7 @@ class Board {
     return cells;
   }
 
-  placeTetrimino(tetrimino) {
+  placeTetrimino (tetrimino) {
     const cells = this.getTetriminoCells(tetrimino);
     this.rows = cloneDeep(this.rows);
 
@@ -90,7 +90,7 @@ class Board {
     return this;
   }
 
-  canMove(tetrimino) {
+  canMove (tetrimino) {
     const x = tetrimino.left;
     const y = tetrimino.top;
 
@@ -104,12 +104,12 @@ class Board {
 
     const cells = this.getTetriminoCells(tetrimino);
 
-    return _.every(cells, (cell) => {
+    return every(cells, (cell) => {
       return !this.rows[cell.y][cell.x];
     });
   }
 
-  clearRows(tetrimino) {
+  clearRows (tetrimino) {
     const lenRows = tetrimino.shape.length;
 
     times(lenRows, (index) => {
@@ -133,7 +133,7 @@ const initialState = {
   linesCleared: 0
 };
 
-export default function gameStateReducer(state = initialState, action) {
+export default function gameStateReducer (state = initialState, action) {
   switch (action.type) {
     case ActionTypes.START_GAME: {
       const tetrimino = new Tetrimino(state.board);

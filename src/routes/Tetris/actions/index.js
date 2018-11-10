@@ -1,12 +1,12 @@
 import { ActionTypes } from '../constants';
 
-export function initSplash() {
+export function initSplash () {
   return {
     type: ActionTypes.InitSplash
-  }
+  };
 };
 
-export function startGame() {
+export function startGame () {
   return (dispatch, getState) => {
     const timerId = setInterval(() => {
       dispatch(moveTetriminoDown());
@@ -16,7 +16,7 @@ export function startGame() {
   };
 };
 
-export function restartGame() {
+export function restartGame () {
   return (dispatch, getState) => {
     clearInterval(getState().tetris.timerId);
 
@@ -28,14 +28,14 @@ export function restartGame() {
   };
 }
 
-export function pauseGame() {
+export function pauseGame () {
   return (dispatch, getState) => {
     clearInterval(getState().tetris.timerId);
     dispatch({type: ActionTypes.PAUSE_GAME, payload: { timerId: null } });
   };
 };
 
-export function unpauseGame() {
+export function unpauseGame () {
   return (dispatch, getState) => {
     const timerId = setInterval(() => {
       dispatch(moveTetriminoDown());
@@ -45,25 +45,25 @@ export function unpauseGame() {
   };
 };
 
-export function moveTetriminoDown() {
+export function moveTetriminoDown () {
   return {
     type: ActionTypes.MOVE_TETRIMINO_DOWN
   };
 };
 
-export function moveTetriminoLeft() {
+export function moveTetriminoLeft () {
   return {
     type: ActionTypes.MOVE_TETRIMINO_LEFT
   };
 };
 
-export function moveTetriminoRight() {
+export function moveTetriminoRight () {
   return {
     type: ActionTypes.MOVE_TETRIMINO_RIGHT
   };
 };
 
-export function rotateTetrimino() {
+export function rotateTetrimino () {
   return {
     type: ActionTypes.ROTATE_TETRIMINO
   };

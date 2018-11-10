@@ -15,9 +15,9 @@ import Tetris from '../components/Tetris';
 const mapActionCreators = require('../actions');
 
 const mapStateToProps = (state) => ({
-    board: state.tetris.board,
-    tetrimino: state.tetris.tetrimino,
-    gameState: state.tetris.gameState
+  board: state.tetris.board,
+  tetrimino: state.tetris.tetrimino,
+  gameState: state.tetris.gameState
 });
 
 export default connect(mapStateToProps, mapActionCreators)(Tetris);

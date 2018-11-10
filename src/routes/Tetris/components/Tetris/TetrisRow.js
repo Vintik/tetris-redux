@@ -14,7 +14,10 @@ const TetrisRow = (props) => {
       {props.children}
     </div>
   );
+};
 
+TetrisRow.PropTypes = {
+  children: React.PropTypes.element
 };
 
 export default TetrisRow;
